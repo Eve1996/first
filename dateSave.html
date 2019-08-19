@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="demo3">这是一个函数闭包的测试。</p>
+    <button id="demo2" onclick="setAudio()">按钮</button>
+    <p id="demo4"></p>
+    <p id="demo1"></p>
+    <audio src="/project_explored/type.mp3" loop id="myAudio" preload="auto"></audio>
+    <script>
+        "use strict";
+        // 目标：设计出支持字符串的闭包
+        // 目标2：该闭包支持定时刷新
+        demo2.onmouseout = demo2.onclick;
+        demo2.onclick = (function () {
+            var i = 0,
+                str;
+            // myAudio.preload="auto";
+            // document.getElementById("demo1").innerHTML="";
+            // demo1.innerHTML = i++;
+            return function () {
+                if (i == 0) {
+                    doAjax(myFunction);
+                }
+                str = demo4.innerHTML;
+                // doAjax();
+                // var str = e;
+                // alert(typeof (str));
+                //arr=[];
+                // console.log(demo3.innerHTML)
+                //str= demo3.innerHTML
+                // for(var k=0;k<str.length;k++){
+                //     console.log(str.slice(0,k));
+                // }
+                if (str != null) {
+                    // console.log("ok??")
+                    var stopTimeout = setTimeout(demo2.onclick, 300);
+                    // console.log(stopTimeout)
+                    demo1.innerHTML = str.slice(0, i++) + "_";
+                    // console.log(i)
+                    if (i - 1 == str.length && str != "") {
+                        clearTimeout(stopTimeout);
+                        demo1.innerHTML = demo1.innerHTML.slice(0, i - 2);
+                        myAudio.pause(); //  当文字打印完时，停止音频播放
+                        console.log("打印完成！")
+                        // demo1.innerHTML = demo3.innerHTML;
+                    }
+                } else {
+                    console.log("str is null !")
+                }
+                // if (demo1.innerHTML==demo3.innerHTML){
+                //     console.log("打印完成！")
+                //     clearTimeout(stopTimeout);
+                // }
+                //return
+            };
+        })();
+        //测试结果1：闭包函数应在最外层加（）（）表明此为自调用函数，
+        //           此为匿名函数的调用方法
+        //测试结果2：字符串获取函数 slice 测试成功
+        //测试结果3：字符串渐进打印成功。
+        //测试结果四：子函数的返回值不是必须的
+        function doAjax(myFunction, print) {
+            var req = new XMLHttpRequest();
+            // var myreq = req.onreadystatechange;  声明后函数失效？
+            // var txt = "";
+            console.log(">>>>>>>>")
+            req.onreadystatechange = function () {
+                if (req.status == 200 && req.readyState == 4) {
+                    // txt = req.responseText;
+                    var txt = "ready go!";
+                    console.log(txt);
+                    myFunction(this);
+                    // console.log(req.status);
+                    // console.log(req.readyState);
+                    //    return txt;
+                }
+            }
+            // console.log(txt);
+            req.open("GET", "/project_explored/myDocument1.txt", "true")
+            req.send();
+        };
+        //  console.log(doAjax(myFunction))
+        function myFunction(req) {
+            // console.log(req.responseText);
+            var txt = req.responseText;
+            demo4.innerHTML = txt;
+            // demo4.style.display = "none";  隐藏 demo4
+            //创建一个新的HTML元素
+            // var audio=document.createElement("embed");
+            // audio.src="/projectA/keyboard_tap.mp3"
+            // autoPrint(txt);
+            // return txt;
+        }
+
+        function setAudio() {
+            myAudio.play();
+        }
+        // //创建一个新的HTML元素
+        function createElement() {
+            var _p = document.createElement("p");
+            var node = document.createTextNode("this is a new p");
+            _p.appendChild(node);
+            demo4.appendChild(_p);
+
+        }
+        createElement();
+    </script>
+</body>
+
+</html>

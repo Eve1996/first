@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="demo"></p>
+    <table id="table" border="1">
+        <thead>
+            <tr>
+                <td>
+                    ID
+                </td>
+                <td>
+                    用户名
+                </td>
+                <td>
+                    邮箱
+                </td>
+                <td>
+                    手机
+                </td>
+                <td>
+                    真实姓名
+                </td>
+                <td>
+                    性别
+                </td>
+
+                <td>
+                    操作
+                </td>
+
+
+            </tr>
+        </thead>
+    </table>
+    <script>
+        "use strict"
+        // 请求数据
+        var Xhr = new XMLHttpRequest();
+        window.onload = function () {
+
+            Xhr.onreadystatechange = function () {
+                if (Xhr.readyState == 4 && Xhr.status == 200) {
+                    var resTable = JSON.parse(Xhr.responseText);
+                    console.log(resTable);
+
+                    var html = ""
+                    // console.log(200)
+                    // demo.innerHTML=resTable;
+                    for (const key of resTable) {
+                        html += `<tr>
+                                <td>${key.uid} </td>
+                                <td>${key.uname}</td>
+                                <td>${key.email}</td>
+                                <td>${key.phone}</td>
+                                <td>${key.user_name}</td>
+                                <td>${key.gender=="0"?"女":key.gender="1"?"男":"未知"}</td>
+                                <td><a href="javascript:deleteData(${key.uid})">删除</a></td>
+                                </tr>
+                            `;
+
+                    }
+                    table.innerHTML = table.innerHTML + html;
+
+
+                }
+            }
+
+            var url = "http://192.168.33.132:83/ajax/select-user.php"
+            Xhr.open("GET", url, true)
+            Xhr.send(null);
+
+        }
+        // var deleteData = document.getElementsByTagName("a");
+        function deleteData(uid) {
+            var Xhr = new XMLHttpRequest();
+            Xhr.onreadystatechange = function () {
+
+                if (Xhr.readyState == 4 && Xhr.status == 200) {
+                    var flag = Xhr.responseText;
+                    if (flag == 1) {
+                        alert(uid+": 删除成功")
+                    } else {
+                        alert(uid+":删除失败")
+                    }
+                    location.reload();
+                }
+            }
+            var url = "http://192.168.33.132:83/ajax/delete.php?uid=" + uid;
+
+            Xhr.open("get", url, true)
+            // Xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            Xhr.send()
+        }
+    </script>
+</body>
+
+</html>

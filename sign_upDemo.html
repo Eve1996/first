@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>logon in</title>
+</head>
+<body>
+    <div>
+        <h3>welcome to logon system</h3>
+    </div>
+    <div>
+        <form action="#" method="GET">
+            <span>手机号：</span><input type="number" id="phoneNum" onkeyup="phoneNumCheck()">
+            <span id="text_phone"></span><br>
+            <span> 密  码 ：</span> <input type="password" id="password" onkeyup="passwordCheck()">
+            <span id="text_psd"></span>  <br>
+            <span> 邮  箱 ：</span><input type="email" id="email">
+            <span id="text_email"></span><br>
+            <span>验证码：</span> <input type="text" id="checkCode" size="7">
+            <button id="randomCode">  </button><br>
+            <button  type="submit" id="submitBtn">提交 </button>
+        </form>
+    </div>
+    <script>
+    function ajaxDo(){//18270753336
+        var request=new XMLHttpRequest();
+        var url="/projectA/phoneNumList.txt";
+        var str="";
+        console.log(">>>>>>>>")
+        return request.onreadystatechange=function(){
+            var str="";
+            if(request.readyState==4&&request.status==200){
+                str=request.responseText;
+                console.log("<<<<<<")
+                console.log("str::"+str);
+                
+            }
+        }
+        // console.log("request.onreadystatechange():::"+request.onreadystatechange());
+        request.open("GET",url,true);
+        request.send();
+    }
+    function phoneNumCheck(){
+        var str=document.getElementById("phoneNum").value;
+        document.getElementById("text_phone").innerHTML=
+            "* 请输入正确的手机号码"
+        text_phone.style.color="red";
+        if(str!=null&&isNaN(str)==false&&str.length==11){
+            ajaxDo();
+            // console.log(ajaxDo().str);
+            text_phone.style.color="green";
+            document.getElementById("text_phone").innerHTML=
+            "* 号码输入成功"
+        }else{
+           
+        }
+    }
+    function passwordCheck(){
+        var str=document.getElementById("password").value;
+        // str.length>=3&&str.length<=6
+        if(str=/^/){
+            document.getElementById("text_psd").innerHTML=
+            "* 密码可用"
+            text_psd.style.color="green";
+        }else{
+            document.getElementById("text_psd").innerHTML=
+            "* 请输入3-6位字符"
+        }
+    }
+    </script>
+    
+</body>
+</html>
